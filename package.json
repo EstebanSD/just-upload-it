@@ -1,9 +1,11 @@
 {
   "name": "just-upload-it",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo 'no tests yet' && exit 0",
+    "lint": "echo 'no lint yet' && exit 0",
+    "prepare": "echo 'prepare hook' && exit 0"
   },
   "keywords": [
     "upload",
@@ -14,5 +16,9 @@
   ],
   "author": "estebansd",
   "license": "MIT",
-  "description": "Universal file/image uploader with pluggable drivers"
+  "description": "Universal file/image uploader with pluggable drivers",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EstebanSD/just-upload-it.git"
+}
 }

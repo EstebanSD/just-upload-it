@@ -1,0 +1,7 @@
+const localDriver = require('./src/drivers/local');
+
+module.exports = {
+  drivers: {
+    local: localDriver
+  }
+};
