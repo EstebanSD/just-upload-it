@@ -1,6 +1,6 @@
 {
   "name": "just-upload-it",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "index.js",
   "scripts": {
     "test": "echo 'no tests yet' && exit 0",
@@ -20,5 +20,5 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/EstebanSD/just-upload-it.git"
-}
+  }
 }
