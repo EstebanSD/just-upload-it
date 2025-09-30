@@ -1,8 +1,11 @@
 {
   "name": "just-upload-it",
   "version": "0.0.4",
-  "main": "index.js",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
     "test": "echo 'no tests yet' && exit 0",
     "lint": "echo 'no lint yet' && exit 0",
     "prepare": "echo 'prepare hook' && exit 0"
@@ -20,5 +23,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/EstebanSD/just-upload-it.git"
+  },
+  "devDependencies": {
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.2"
   }
 }
