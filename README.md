@@ -31,3 +31,7 @@ const result = await uploader.upload(Buffer.from("Hello world"), {
 
 await uploader.delete(result.publicId);
 ```
+
+## License
+
+MIT © 2025 EstebanSD
