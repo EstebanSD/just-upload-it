@@ -1,7 +1,7 @@
 import { v2 as cloudinary, UploadApiOptions } from 'cloudinary';
 import { v4 as uuid } from 'uuid';
 import { Readable } from 'stream';
-import { DeleteResult, IUploader, UploadOptions, UploadResult } from '../interfaces';
+import { DeleteOptions, DeleteResult, IUploader, UploadOptions, UploadResult } from '../interfaces';
 import { getExtensionFromMime } from '../helpers';
 
 type CloudinaryDestroyResponse = {
@@ -30,26 +30,32 @@ export class CloudinaryDriver implements IUploader {
     const ext = getExtensionFromMime(options?.metadata?.mimetype);
 
     const uploadOptions: UploadApiOptions = {
-      resource_type: options?.resourceType ?? 'auto',
+      resource_type: options?.metadata?.resourceType ?? 'auto',
       public_id: uniqueName,
       folder: options?.path,
       format: ext,
-      context: options?.metadata,
+      context: options?.metadata
+        ? Object.fromEntries(Object.entries(options.metadata).map(([k, v]) => [k, String(v)]))
+        : undefined,
     };
 
     return new Promise<UploadResult>((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(uploadOptions, (error, result) => {
         if (error || !result) {
-          return reject(new Error('Cloudinary upload failed: ' + error?.message));
+          return reject(
+            error
+              ? new Error(`Cloudinary upload failed: ${error.message ?? JSON.stringify(error)}`)
+              : new Error('Cloudinary upload failed: unknown error'),
+          );
         }
 
         resolve({
           url: result.secure_url,
           publicId: result.public_id,
-          resourceType: result.resource_type as 'image' | 'video' | 'raw',
           metadata: {
             size: result.bytes,
             format: result.format,
+            resourceType: result.resource_type as 'image' | 'video' | 'raw',
             width: result.width,
             height: result.height,
             ...options?.metadata,
@@ -61,14 +67,7 @@ export class CloudinaryDriver implements IUploader {
     });
   }
 
-  async delete(
-    publicId: string,
-    options?: { resourceType?: 'image' | 'video' | 'raw' },
-  ): Promise<DeleteResult> {
-    await cloudinary.uploader.destroy(publicId, {
-      resource_type: options?.resourceType ?? 'image',
-    });
-
+  async delete(publicId: string, options?: DeleteOptions): Promise<DeleteResult> {
     const { result } = (await cloudinary.uploader.destroy(publicId, {
       resource_type: options?.resourceType ?? 'image',
     })) as CloudinaryDestroyResponse;
@@ -76,7 +75,7 @@ export class CloudinaryDriver implements IUploader {
     return { result };
   }
 
-  getUrl(publicId: string): string {
+  getUrl(publicId: string) {
     return cloudinary.url(publicId, { secure: true });
   }
 }

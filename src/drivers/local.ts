@@ -65,9 +65,9 @@ export class LocalDriver implements IUploader {
         size: file.byteLength,
         format: ext,
         uploadedAt: new Date(),
+        resourceType: options?.metadata?.resourceType,
         ...(options?.metadata || {}),
       },
-      resourceType: options?.resourceType,
     };
   }
 

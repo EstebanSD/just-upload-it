@@ -1,10 +1,12 @@
-import { UrlOptions } from './url';
-
 export interface UploadOptions {
   rename?: string;
   path?: string;
-  metadata?: Record<string, any>;
-  resourceType?: 'image' | 'video' | 'raw';
+  metadata?: {
+    size?: number;
+    format?: string;
+    resourceType?: 'image' | 'video' | 'raw';
+    [key: string]: any;
+  };
 }
 
 export interface UploadResult {
@@ -13,8 +15,12 @@ export interface UploadResult {
   metadata?: {
     size?: number;
     format?: string;
+    resourceType?: 'image' | 'video' | 'raw';
     [key: string]: any;
   };
+}
+
+export interface DeleteOptions {
   resourceType?: 'image' | 'video' | 'raw';
 }
 
@@ -24,9 +30,6 @@ export interface DeleteResult {
 
 export interface IUploader {
   upload(file: Buffer, options?: UploadOptions): Promise<UploadResult>;
-  delete(
-    publicId: string,
-    options?: { resourceType?: 'image' | 'video' | 'raw' },
-  ): Promise<DeleteResult>;
-  getUrl?(publicId: string, options?: UrlOptions): string;
+  delete(publicId: string, options?: DeleteOptions): Promise<DeleteResult>;
+  getUrl?(publicId: string): string;
 }

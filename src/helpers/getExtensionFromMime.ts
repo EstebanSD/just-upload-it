@@ -1,3 +1,11 @@
+const MIME_EXTENSIONS: Record<string, string> = {
+  'image/svg+xml': 'svg',
+  'image/jpeg': 'jpg',
+  'image/png': 'png',
+  'image/webp': 'webp',
+  'application/pdf': 'pdf',
+};
+
 /**
  * Returns a file extension from a given MIME type.
  *
@@ -11,19 +19,13 @@
  * import { extension } from 'mime-types';
  * const ext = extension(mimetype); // e.g., 'svg'
  */
-export function getExtensionFromMime(mimetype: string): string {
-  switch (mimetype) {
-    case 'image/svg+xml':
-      return 'svg';
-    case 'image/jpeg':
-      return 'jpg';
-    case 'image/png':
-      return 'png';
-    case 'image/webp':
-      return 'webp';
-    case 'application/pdf':
-      return 'pdf';
-    default:
-      return mimetype.split('/')[1] ?? 'bin';
-  }
+export function getExtensionFromMime(mimetype?: string): string {
+  if (!mimetype) return 'bin';
+
+  if (MIME_EXTENSIONS[mimetype]) return MIME_EXTENSIONS[mimetype];
+
+  const parts = mimetype.split('/');
+  if (parts.length === 2 && parts[1]) return parts[1];
+
+  return 'bin';
 }
