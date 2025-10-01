@@ -18,8 +18,15 @@ export interface UploadResult {
   resourceType?: 'image' | 'video' | 'raw';
 }
 
+export interface DeleteResult {
+  result: 'ok' | 'not found' | 'error';
+}
+
 export interface IUploader {
   upload(file: Buffer, options?: UploadOptions): Promise<UploadResult>;
-  delete(publicId: string, options?: { resourceType?: 'image' | 'video' | 'raw' }): Promise<void>;
+  delete(
+    publicId: string,
+    options?: { resourceType?: 'image' | 'video' | 'raw' },
+  ): Promise<DeleteResult>;
   getUrl?(publicId: string, options?: UrlOptions): string;
 }

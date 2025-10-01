@@ -1,14 +1,10 @@
 import { IUploader, UploadOptions, UploadResult, UrlOptions } from './interfaces';
-import { local } from './drivers/local';
+import { LocalDriver, LocalConfig } from './drivers/local';
 import { CloudinaryDriver, CloudinaryConfig } from './drivers/cloudinary';
-// import { S3Driver, S3Config } from "./drivers/s3";
 
-type Provider = 'local' | 'cloudinary'; // expansible
-
-interface UploaderConfig {
-  provider: Provider;
-  config?: any;
-}
+type UploaderConfig =
+  | { provider: 'local'; config?: LocalConfig }
+  | { provider: 'cloudinary'; config: CloudinaryConfig };
 
 export class Uploader {
   private driver: IUploader;
@@ -16,10 +12,10 @@ export class Uploader {
   constructor({ provider, config }: UploaderConfig) {
     switch (provider) {
       case 'local':
-        this.driver = local;
+        this.driver = new LocalDriver();
         break;
       case 'cloudinary':
-        this.driver = new CloudinaryDriver(config as CloudinaryConfig);
+        this.driver = new CloudinaryDriver(config);
         break;
       default:
         throw new Error(`Provider "${provider}" not supported`);

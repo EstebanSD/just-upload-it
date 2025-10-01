@@ -14,10 +14,20 @@ npm install just-upload-it
 import { Uploader } from "just-upload-it";
 
 const uploader = new Uploader({
-  provider: "local"
+  provider: "local",
+  config: {
+    baseDir: "./uploads",
+    baseUrl: "http://localhost/uploads",
+    overwrite: false,
+  }
 });
 
-const result = await uploader.upload(Buffer);
-console.log(result.url);
+const result = await uploader.upload(Buffer.from("Hello world"), {
+  rename: "example",
+  path: "texts",
+  metadata: { format: "txt" },
+});
+
+
 await uploader.delete(result.publicId);
 ```
