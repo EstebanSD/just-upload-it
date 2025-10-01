@@ -1,4 +1,4 @@
-import { IUploader, UploadOptions, UploadResult, UrlOptions } from './interfaces';
+import { DeleteOptions, IUploader, UploadOptions, UploadResult, DeleteResult } from './interfaces';
 import { LocalDriver, LocalConfig } from './drivers/local';
 import { CloudinaryDriver, CloudinaryConfig } from './drivers/cloudinary';
 
@@ -6,6 +6,21 @@ type UploaderConfig =
   | { provider: 'local'; config?: LocalConfig }
   | { provider: 'cloudinary'; config: CloudinaryConfig };
 
+// ======================
+// Interfaces & Types
+// ======================
+export type { DeleteOptions, UploadOptions, DeleteResult, UploadResult };
+export type { LocalConfig, CloudinaryConfig };
+export type { UploaderConfig };
+
+// ======================
+// Drivers
+// ======================
+export { LocalDriver, CloudinaryDriver };
+
+// ======================
+// Main Uploader
+// ======================
 export class Uploader {
   private driver: IUploader;
 
@@ -26,12 +41,12 @@ export class Uploader {
     return this.driver.upload(file, options);
   }
 
-  async delete(publicId: string): Promise<void> {
-    await this.driver.delete(publicId);
+  async delete(publicId: string, options?: DeleteOptions): Promise<DeleteResult> {
+    return await this.driver.delete(publicId, options);
   }
 
-  getUrl(publicId: string, options?: UrlOptions): string {
+  getUrl(publicId: string): string {
     if (!this.driver.getUrl) return publicId;
-    return this.driver.getUrl(publicId, options);
+    return this.driver.getUrl(publicId);
   }
 }
