@@ -159,7 +159,7 @@ const config: LocalConfig = {
 const uploader = new Uploader({ provider: 'local', config });
 ```
 
-## Cloudinary
+### Cloudinary
 
 ```ts
 import { Uploader, CloudinaryConfig } from 'just-upload-it';
