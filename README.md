@@ -12,7 +12,7 @@ Switch between local storage, Cloudinary, S3, and more with a single API.
 
 ⚠️ **Under active development** - Not recommended for production use yet.
 
-[Installation](#installation) • [Quick Start](#quick-start) • [API](#api)
+[Installation](#installation) • [Quick Start](#quick-start) • [API](#api-reference)
 
 </div>
 
@@ -33,7 +33,7 @@ Switch between local storage, Cloudinary, S3, and more with a single API.
 npm install just-upload-it
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ```ts
 import { Uploader, LocalConfig } from 'just-upload-it';
@@ -68,7 +68,7 @@ await uploader.delete(result.publicId);
 | Google Cloud |   Planned   | -                                         |
 | Azure Blob   |   Planned   | -                                         |
 
-## 📖 API Reference
+## API Reference
 
 `new Uploader(config)`
 Creates a new uploader instance.
@@ -82,6 +82,7 @@ const uploader = new Uploader({
 
 `uploader.upload(buffer, options?)`
 Uploads a file buffer.
+
 **Parameters:**
 
 - `buffer: Buffer` - File content as Buffer
@@ -114,6 +115,7 @@ interface UploadResult {
 
 `uploader.delete(publicId, options?)`
 Deletes an uploaded file.
+
 **Parameters:**
 
 - `publicId: string` - File identifier from upload result
@@ -133,6 +135,7 @@ interface DeleteResult {
 
 `uploader.getUrl(publicId)`
 Gets the public URL for a file.
+
 **Parameters:**
 
 - `publicId: string` - File identifier
