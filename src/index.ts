@@ -1,6 +1,7 @@
 import { DeleteOptions, IUploader, UploadOptions, UploadResult, DeleteResult } from './interfaces';
 import { LocalDriver, LocalConfig } from './drivers/local';
 import { CloudinaryDriver, CloudinaryConfig } from './drivers/cloudinary';
+import { detectMimeType, getExtensionFromMime, getResourceType } from './lib/helpers';
 
 type UploaderConfig =
   | { provider: 'local'; config?: LocalConfig }
@@ -38,7 +39,23 @@ export class Uploader {
   }
 
   async upload(file: Buffer, options?: UploadOptions): Promise<UploadResult> {
-    return this.driver.upload(file, options);
+    // STANDARDIZATION: Automatically detect metadata
+    const detectedMime = detectMimeType(file);
+    const detectedFormat = getExtensionFromMime(detectedMime);
+    const detectedResourceType = getResourceType(detectedMime);
+
+    const normalizedOptions: UploadOptions = {
+      ...options,
+      metadata: {
+        mimetype: detectedMime,
+        format: options?.metadata?.format || detectedFormat,
+        resourceType: options?.metadata?.resourceType || detectedResourceType,
+        size: file.byteLength,
+        ...options?.metadata,
+      },
+    };
+
+    return this.driver.upload(file, normalizedOptions);
   }
 
   async delete(publicId: string, options?: DeleteOptions): Promise<DeleteResult> {

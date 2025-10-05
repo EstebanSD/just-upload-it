@@ -1,9 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { v4 as uuid } from 'uuid';
+import { randomUUID } from 'crypto';
 import { DeleteResult, IUploader, UploadOptions, UploadResult } from '../interfaces';
-
-const UPLOADS_DIR = path.resolve(__dirname, '../../uploads');
 
 export interface LocalConfig {
   baseDir?: string;
@@ -19,7 +17,7 @@ export class LocalDriver implements IUploader {
 
   constructor(config: LocalConfig = {}) {
     this.baseDir = config.baseDir || path.resolve(process.cwd(), 'uploads');
-    this.baseUrl = config.baseUrl || 'http://localhost/uploads';
+    this.baseUrl = config.baseUrl || 'http://localhost:3000/uploads';
     this.overwrite = config.overwrite ?? false;
     this.namingStrategy = config.namingStrategy;
   }
@@ -32,13 +30,13 @@ export class LocalDriver implements IUploader {
       throw new Error('Invalid load path, must not start with ..');
     }
 
-    const fullDir = path.join(UPLOADS_DIR, folder);
+    const fullDir = path.join(this.baseDir, folder);
     await fs.mkdir(fullDir, { recursive: true });
 
     const baseName = options?.rename || 'file';
     const filename = this.namingStrategy
       ? this.namingStrategy(baseName, ext)
-      : `${baseName}-${uuid()}.${ext}`;
+      : `${baseName}-${randomUUID()}.${ext}`;
 
     const relativePath = path.join(folder, filename);
     const filePath = path.join(this.baseDir, relativePath);
@@ -62,7 +60,7 @@ export class LocalDriver implements IUploader {
       url: `${this.baseUrl}/${relativePath.replace(/\\/g, '/')}`,
       publicId: relativePath,
       metadata: {
-        size: file.byteLength,
+        size: options?.metadata?.size || file.byteLength,
         format: ext,
         uploadedAt: new Date(),
         resourceType: options?.metadata?.resourceType,

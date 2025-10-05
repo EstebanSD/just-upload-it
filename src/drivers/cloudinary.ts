@@ -1,8 +1,7 @@
 import { v2 as cloudinary, UploadApiOptions } from 'cloudinary';
-import { v4 as uuid } from 'uuid';
+import { randomUUID } from 'crypto';
 import { Readable } from 'stream';
 import { DeleteOptions, DeleteResult, IUploader, UploadOptions, UploadResult } from '../interfaces';
-import { getExtensionFromMime } from '../helpers';
 
 type CloudinaryDestroyResponse = {
   result: 'ok' | 'not found' | 'error';
@@ -25,9 +24,9 @@ export class CloudinaryDriver implements IUploader {
   }
 
   async upload(file: Buffer, options?: UploadOptions): Promise<UploadResult> {
+    const ext = options?.metadata?.format || 'bin';
     const baseName = options?.rename || 'file';
-    const uniqueName = `${baseName}-${uuid()}`;
-    const ext = getExtensionFromMime(options?.metadata?.mimetype);
+    const uniqueName = `${baseName}-${randomUUID()}`;
 
     const uploadOptions: UploadApiOptions = {
       resource_type: options?.metadata?.resourceType ?? 'auto',
