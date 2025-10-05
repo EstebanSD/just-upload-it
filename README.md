@@ -12,8 +12,6 @@ Switch between local storage, Cloudinary, S3, and more with a single API.
 
 ⚠️ **Under active development** - Not recommended for production use yet.
 
-[Installation](#installation) • [Quick Start](#quick-start) • [API](#api-reference)
-
 </div>
 
 ---
