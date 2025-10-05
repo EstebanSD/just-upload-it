@@ -33,7 +33,7 @@ Switch between local storage, Cloudinary, S3, and more with a single API.
 npm install just-upload-it
 ```
 
-## Quick Start
+## 🚀 Quick Start
 
 ```ts
 import { Uploader, LocalConfig } from 'just-upload-it';
@@ -60,15 +60,15 @@ await uploader.delete(result.publicId);
 
 ## 🎨 Supported Providers
 
-| Provider     |   Status    | Features                                  |
-| ------------ | :---------: | ----------------------------------------- |
-| Local        |   Stable    | File system storage                       |
-| Cloudinary   |   Stable    | Image/video optimization, transformations |
-| AWS S3       | Coming soon | Scalable cloud storage                    |
-| Google Cloud |   Planned   | -                                         |
-| Azure Blob   |   Planned   | -                                         |
+| Provider     |   Status    | Features                        |
+| ------------ | :---------: | ------------------------------- |
+| Local        |   Stable    | File system storage             |
+| Cloudinary   |   Stable    | Cloud storage with CDN delivery |
+| AWS S3       | Coming soon | Scalable cloud storage          |
+| Google Cloud |   Planned   | -                               |
+| Azure Blob   |   Planned   | -                               |
 
-## API Reference
+## 📖 API Reference
 
 `new Uploader(config)`
 Creates a new uploader instance.
@@ -187,6 +187,54 @@ const result = await uploader.upload(fileBuffer, {
 
 ```ts
 await uploader.delete(publicId, { resourceType: 'raw' });
+```
+
+## 💡 Examples
+
+### Upload with auto-detection
+
+File type, format, and resource type are automatically detected:
+
+```ts
+const result = await uploader.upload(imageBuffer);
+// No need to specify format or resourceType
+```
+
+### Upload with custom metadata
+
+```ts
+const result = await uploader.upload(fileBuffer, {
+  rename: 'user-avatar',
+  path: 'users',
+  metadata: {
+    userId: '12345',
+    uploadedBy: 'john@example.com',
+  },
+});
+```
+
+### Upload to organized folders
+
+```ts
+const today = new Date().toISOString().split('T')[0];
+
+const result = await uploader.upload(buffer, {
+  path: `uploads-${today}`,
+  rename: 'document',
+});
+```
+
+### Switch providers without code changes
+
+```ts
+// Development: local storage
+const uploader = new Uploader({
+  provider: process.env.NODE_ENV === 'production' ? 'cloudinary' : 'local',
+  config: process.env.NODE_ENV === 'production' ? cloudinaryConfig : localConfig,
+});
+
+// Same code works for both!
+await uploader.upload(buffer);
 ```
 
 ## License
