@@ -151,7 +151,7 @@ import { Uploader, LocalConfig } from 'just-upload-it';
 
 const config: LocalConfig = {
   baseDir: './uploads', // Upload directory (default: './uploads')
-  baseUrl: 'http://localhost/uploads', // Base URL for files
+  baseUrl: 'http://localhost:3000/uploads', // Base URL for files
   overwrite: false, // Allow overwriting existing files
   namingStrategy: (context) => string, // Custom naming function
 };
@@ -191,4 +191,4 @@ await uploader.delete(publicId, { resourceType: 'raw' });
 
 ## License
 
-MIT © 2025 EstebanSD
+[MIT License](https://github.com/EstebanSD/just-upload-it/blob/main/LICENSE) © 2025 EstebanSD
