@@ -2,6 +2,7 @@
 
 <div align="center">
 
+[![CI](https://github.com/EstebanSD/just-upload-it/actions/workflows/ci.yml/badge.svg)](https://github.com/EstebanSD/just-upload-it/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/just-upload-it.svg)](https://www.npmjs.com/package/just-upload-it)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
