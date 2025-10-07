@@ -4,7 +4,6 @@ import {
   PutObjectCommand,
   DeleteObjectCommand,
   HeadObjectCommand,
-  ObjectCannedACL,
 } from '@aws-sdk/client-s3';
 import {
   IUploader,
@@ -19,14 +18,12 @@ export interface S3Config {
   bucket: string;
   accessKeyId: string;
   secretAccessKey: string;
-  acl?: ObjectCannedACL;
 }
 
 export class S3Driver implements IUploader {
   private readonly client: S3Client;
   private readonly bucket: string;
   private readonly baseUrl: string;
-  private readonly acl?: ObjectCannedACL;
 
   constructor(private readonly config: S3Config) {
     this.client = new S3Client({
@@ -38,7 +35,6 @@ export class S3Driver implements IUploader {
     });
 
     this.bucket = config.bucket;
-    this.acl = config.acl;
     this.baseUrl = `https://${config.bucket}.s3.${config.region}.amazonaws.com`;
   }
 
@@ -55,7 +51,6 @@ export class S3Driver implements IUploader {
       Bucket: this.bucket,
       Key: key,
       Body: file,
-      ACL: this.acl,
       ContentType: contentType,
       Metadata: options?.metadata
         ? Object.fromEntries(
