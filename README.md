@@ -34,18 +34,10 @@ npm install just-upload-it
 ## 🚀 Quick Start
 
 ```ts
-import { Uploader, LocalConfig } from 'just-upload-it';
+import { Uploader } from 'just-upload-it';
 import fs from 'fs';
 
-const localConfig: LocalConfig = {
-  baseDir: './uploads',
-  baseUrl: 'http://localhost:3000/uploads',
-};
-
-const uploader = new Uploader({
-  provider: 'local',
-  config: localConfig, // (optional)
-});
+const uploader = new Uploader({ provider: 'local' });
 
 const fileBuffer = fs.readFileSync('./photo.jpg');
 const result = await uploader.upload(fileBuffer, {
@@ -58,13 +50,13 @@ await uploader.delete(result.publicId);
 
 ## 🎨 Supported Providers
 
-| Provider     |   Status    | Features                        |
-| ------------ | :---------: | ------------------------------- |
-| Local        |   Stable    | File system storage             |
-| Cloudinary   |   Stable    | Cloud storage with CDN delivery |
-| AWS S3       | Coming soon | Scalable cloud storage          |
-| Google Cloud |   Planned   | -                               |
-| Azure Blob   |   Planned   | -                               |
+| Provider     | Status  | Features                        |
+| ------------ | :-----: | ------------------------------- |
+| Local        | Stable  | File system storage             |
+| Cloudinary   | Stable  | Cloud storage with CDN delivery |
+| AWS S3       | Stable  | Scalable cloud storage          |
+| Google Cloud | Planned | -                               |
+| Azure Blob   | Planned | -                               |
 
 ## 📖 API Reference
 
@@ -74,7 +66,7 @@ Creates a new uploader instance.
 ```ts
 const uploader = new Uploader({
   provider: 'local' | 'cloudinary' | 's3',
-  config: ProviderConfig,
+  config: <ProviderConfig>,
 });
 ```
 
@@ -151,7 +143,6 @@ const config: LocalConfig = {
   baseDir: './uploads', // Upload directory (default: './uploads')
   baseUrl: 'http://localhost:3000/uploads', // Base URL for files
   overwrite: false, // Allow overwriting existing files
-  namingStrategy: (context) => string, // Custom naming function
 };
 
 const uploader = new Uploader({ provider: 'local', config });
@@ -162,22 +153,21 @@ const uploader = new Uploader({ provider: 'local', config });
 ```ts
 import { Uploader, CloudinaryConfig } from 'just-upload-it';
 
-const cloudConfig: CloudinaryConfig = {
+const config: CloudinaryConfig = {
   cloudName: 'your-cloud-name',
   apiKey: 'your-api-key',
   apiSecret: 'your-api-secret',
 };
 
-const uploader = new Uploader({
-  provider: 'cloudinary',
-  config: cloudConfig,
-});
+const uploader = new Uploader({ provider: 'cloudinary', config });
 
 const result = await uploader.upload(fileBuffer, {
   rename: 'my-file',
   path: 'test-folder',
   metadata: { description: 'Example file' },
 });
+
+await uploader.delete(result.publicId);
 ```
 
 > ⚠️ **Important:** For non-image files (`video`, `raw`), always set `resourceType` in `options`.  
@@ -185,6 +175,30 @@ const result = await uploader.upload(fileBuffer, {
 
 ```ts
 await uploader.delete(publicId, { resourceType: 'raw' });
+```
+
+### AWS S3
+
+```ts
+import { Uploader, S3Config } from 'just-upload-it';
+
+const config: S3Config = {
+  region: 'your-bucket-region',
+  bucket: 'your-bucket-name',
+  accessKeyId: 'your-access-key-id',
+  secretAccessKey: 'your-secret-access-key',
+};
+
+const uploader = new Uploader({ provider: 'aws-s3', config });
+
+const result = await uploader.upload(fileBuffer, {
+  rename: 'document',
+  path: 'uploads',
+  metadata: {
+    format: 'pdf',
+    resourceType: 'raw',
+  },
+});
 ```
 
 ## 💡 Examples
