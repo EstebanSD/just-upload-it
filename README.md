@@ -65,7 +65,7 @@ Creates a new uploader instance.
 
 ```ts
 const uploader = new Uploader({
-  provider: 'local' | 'cloudinary' | 's3',
+  provider: 'local' | 'cloudinary' | 'aws-s3',
   config: <ProviderConfig>,
 });
 ```
