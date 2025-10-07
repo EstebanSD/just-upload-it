@@ -1,7 +1,13 @@
-import { DeleteOptions, IUploader, UploadOptions, UploadResult, DeleteResult } from './interfaces';
+import {
+  DeleteOptions,
+  IUploader,
+  UploadOptions,
+  UploadResult,
+  DeleteResult,
+} from './lib/interfaces';
+import { detectMimeType, getExtensionFromMime, getResourceType } from './lib/helpers';
 import { LocalDriver, LocalConfig } from './drivers/local';
 import { CloudinaryDriver, CloudinaryConfig } from './drivers/cloudinary';
-import { detectMimeType, getExtensionFromMime, getResourceType } from './lib/helpers';
 
 type UploaderConfig =
   | { provider: 'local'; config?: LocalConfig }

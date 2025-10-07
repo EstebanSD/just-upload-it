@@ -1,7 +1,13 @@
 import { v2 as cloudinary, UploadApiOptions } from 'cloudinary';
 import { randomUUID } from 'crypto';
 import { Readable } from 'stream';
-import { DeleteOptions, DeleteResult, IUploader, UploadOptions, UploadResult } from '../interfaces';
+import {
+  DeleteOptions,
+  DeleteResult,
+  IUploader,
+  UploadOptions,
+  UploadResult,
+} from '../lib/interfaces';
 
 type CloudinaryDestroyResponse = {
   result: 'ok' | 'not found' | 'error';

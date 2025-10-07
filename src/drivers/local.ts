@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { randomUUID } from 'crypto';
-import { DeleteResult, IUploader, UploadOptions, UploadResult } from '../interfaces';
+import { DeleteResult, IUploader, UploadOptions, UploadResult } from '../lib/interfaces';
 
 export interface LocalConfig {
   baseDir?: string;
