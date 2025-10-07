@@ -8,22 +8,24 @@ import {
 import { detectMimeType, getExtensionFromMime, getResourceType } from './lib/helpers';
 import { LocalDriver, LocalConfig } from './drivers/local';
 import { CloudinaryDriver, CloudinaryConfig } from './drivers/cloudinary';
+import { S3Driver, S3Config } from './drivers/aws-s3';
 
 type UploaderConfig =
   | { provider: 'local'; config?: LocalConfig }
-  | { provider: 'cloudinary'; config: CloudinaryConfig };
+  | { provider: 'cloudinary'; config: CloudinaryConfig }
+  | { provider: 'aws-s3'; config: S3Config };
 
 // ======================
 // Interfaces & Types
 // ======================
 export type { DeleteOptions, UploadOptions, DeleteResult, UploadResult };
-export type { LocalConfig, CloudinaryConfig };
+export type { LocalConfig, CloudinaryConfig, S3Config };
 export type { UploaderConfig };
 
 // ======================
 // Drivers
 // ======================
-export { LocalDriver, CloudinaryDriver };
+export { LocalDriver, CloudinaryDriver, S3Driver };
 
 // ======================
 // Main Uploader
@@ -38,6 +40,9 @@ export class Uploader {
         break;
       case 'cloudinary':
         this.driver = new CloudinaryDriver(config);
+        break;
+      case 'aws-s3':
+        this.driver = new S3Driver(config);
         break;
       default:
         throw new Error(`Provider "${provider}" not supported`);
