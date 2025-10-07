@@ -7,19 +7,16 @@ export interface LocalConfig {
   baseDir?: string;
   baseUrl?: string;
   overwrite?: boolean;
-  namingStrategy?: (originalName: string, ext: string) => string;
 }
 export class LocalDriver implements IUploader {
   private readonly baseDir: string;
   private readonly baseUrl: string;
   private readonly overwrite: boolean;
-  private readonly namingStrategy?: (originalName: string, ext: string) => string;
 
   constructor(config: LocalConfig = {}) {
     this.baseDir = config.baseDir || path.resolve(process.cwd(), 'uploads');
     this.baseUrl = config.baseUrl || 'http://localhost:3000/uploads';
     this.overwrite = config.overwrite ?? false;
-    this.namingStrategy = config.namingStrategy;
   }
 
   async upload(file: Buffer, options: UploadOptions): Promise<UploadResult> {
@@ -34,9 +31,7 @@ export class LocalDriver implements IUploader {
     await fs.mkdir(fullDir, { recursive: true });
 
     const baseName = options?.rename || 'file';
-    const filename = this.namingStrategy
-      ? this.namingStrategy(baseName, ext)
-      : `${baseName}-${randomUUID()}.${ext}`;
+    const filename = `${baseName}-${randomUUID()}.${ext}`;
 
     const relativePath = path.join(folder, filename);
     const filePath = path.join(this.baseDir, relativePath);
