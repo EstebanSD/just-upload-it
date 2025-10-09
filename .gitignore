@@ -4,3 +4,6 @@ dist
 
 # macOS system files
 .DS_Store
+
+# tests
+test-uploads/
