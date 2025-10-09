@@ -13,7 +13,7 @@ export class LocalDriver implements IUploader {
   private readonly baseUrl: string;
   private readonly overwrite: boolean;
 
-  constructor(config: LocalConfig = {}) {
+  constructor(private readonly config: LocalConfig = {}) {
     this.baseDir = config.baseDir || path.resolve(process.cwd(), 'uploads');
     this.baseUrl = config.baseUrl || 'http://localhost:3000/uploads';
     this.overwrite = config.overwrite ?? false;
