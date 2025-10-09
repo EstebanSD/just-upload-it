@@ -1,14 +1,15 @@
 {
   "name": "just-upload-it",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
-    "test": "echo 'no tests yet' && exit 0",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "echo 'no lint yet' && exit 0",
-    "prepare": "echo 'prepare hook' && exit 0"
+    "prepare": "npm run build"
   },
   "keywords": [
     "upload",
@@ -28,12 +29,14 @@
     "node": ">=18"
   },
   "devDependencies": {
-    "@types/node": "^24.6.0",
+    "@types/node": "^24.7.0",
     "tsup": "^8.5.0",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.901.0",
-    "cloudinary": "^2.7.0"
+    "cloudinary": "^2.7.0",
+    "file-type": "^21.0.0"
   }
 }

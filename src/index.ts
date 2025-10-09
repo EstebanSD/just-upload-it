@@ -36,7 +36,7 @@ export class Uploader {
   constructor({ provider, config }: UploaderConfig) {
     switch (provider) {
       case 'local':
-        this.driver = new LocalDriver();
+        this.driver = new LocalDriver(config);
         break;
       case 'cloudinary':
         this.driver = new CloudinaryDriver(config);
@@ -51,7 +51,7 @@ export class Uploader {
 
   async upload(file: Buffer, options?: UploadOptions): Promise<UploadResult> {
     // STANDARDIZATION: Automatically detect metadata
-    const detectedMime = detectMimeType(file);
+    const detectedMime = await detectMimeType(file);
     const detectedFormat = getExtensionFromMime(detectedMime);
     const detectedResourceType = getResourceType(detectedMime);
 
