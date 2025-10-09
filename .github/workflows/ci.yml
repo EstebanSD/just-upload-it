@@ -36,8 +36,8 @@ jobs:
       - name: Build package
         run: npm run build
 
-    # - name: Run tests
-    #   run: npm test
+      - name: Run tests
+        run: npm test
 
     # - name: Run linter
     #   run: npm run lint
