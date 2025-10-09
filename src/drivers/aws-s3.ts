@@ -41,7 +41,7 @@ export class S3Driver implements IUploader {
   async upload(file: Buffer, options?: UploadOptions): Promise<UploadResult> {
     const ext = options?.metadata?.format || 'bin';
     const baseName = options?.rename || 'file';
-    const contentType = options?.metadata?.mimetype;
+    const contentType = options?.metadata?.mimetype as string | undefined;
 
     const filename = `${baseName}-${randomUUID()}.${ext}`;
 
@@ -56,7 +56,7 @@ export class S3Driver implements IUploader {
         ? Object.fromEntries(
             Object.entries(options.metadata)
               .filter(([k]) => !['size', 'format', 'resourceType'].includes(k))
-              .map(([k, v]) => [k, String(v)]),
+              .map(([k, v]) => [k, String(v)])
           )
         : undefined,
     });
@@ -80,15 +80,16 @@ export class S3Driver implements IUploader {
     };
   }
 
-  async delete(publicId: string, options?: DeleteOptions): Promise<DeleteResult> {
+  async delete(publicId: string, _options?: DeleteOptions): Promise<DeleteResult> {
     try {
       const headCommand = new HeadObjectCommand({
         Bucket: this.bucket,
         Key: publicId,
       });
       await this.client.send(headCommand);
-    } catch (err: any) {
-      if (err.name === 'NotFound' || err.$metadata?.httpStatusCode === 404) {
+    } catch (err: unknown) {
+      const error = err as { name?: string; $metadata?: { httpStatusCode?: number } };
+      if (error.name === 'NotFound' || error.$metadata?.httpStatusCode === 404) {
         return { result: 'not found' };
       }
       return { result: 'error' };
@@ -101,7 +102,7 @@ export class S3Driver implements IUploader {
       });
       await this.client.send(deleteCommand);
       return { result: 'ok' };
-    } catch (err) {
+    } catch {
       return { result: 'error' };
     }
   }

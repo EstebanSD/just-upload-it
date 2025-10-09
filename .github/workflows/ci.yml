@@ -43,8 +43,11 @@ jobs:
       - name: Run tests
         run: npm test
 
-    # - name: Run linter
-    #   run: npm run lint
+      - name: Run linter
+        run: npm run lint
+
+      - name: Check formatting
+        run: npm run format:check
 
   # ================================
   # Job 2: Publish (only on tags)

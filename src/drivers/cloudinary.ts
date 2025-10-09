@@ -50,7 +50,7 @@ export class CloudinaryDriver implements IUploader {
           return reject(
             error
               ? new Error(`Cloudinary upload failed: ${error.message ?? JSON.stringify(error)}`)
-              : new Error('Cloudinary upload failed: unknown error'),
+              : new Error('Cloudinary upload failed: unknown error')
           );
         }
 
