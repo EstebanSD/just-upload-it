@@ -74,6 +74,11 @@ export function detectMimeType(buffer: Buffer): string {
     return 'application/x-rar-compressed';
   }
 
+  // TXT
+  if (isTextFile(buffer)) {
+    return 'text/plain';
+  }
+
   return 'application/octet-stream'; // fallback
 }
 
@@ -118,4 +123,14 @@ export function getResourceType(mimeType?: string): 'image' | 'video' | 'raw' {
   if (mimeType.startsWith('video/')) return 'video';
 
   return 'raw';
+}
+
+function isTextFile(buffer: Buffer): boolean {
+  for (let i = 0; i < buffer.length; i++) {
+    const byte = buffer[i];
+    if (byte > 0x7f) {
+      return false;
+    }
+  }
+  return true;
 }

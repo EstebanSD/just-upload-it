@@ -36,7 +36,7 @@ export class Uploader {
   constructor({ provider, config }: UploaderConfig) {
     switch (provider) {
       case 'local':
-        this.driver = new LocalDriver();
+        this.driver = new LocalDriver(config);
         break;
       case 'cloudinary':
         this.driver = new CloudinaryDriver(config);
