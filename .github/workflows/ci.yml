@@ -4,9 +4,13 @@ on:
   push:
     branches: [main]
     tags:
-      - 'v*' # Trigger en tags v0.1.0, v1.2.3, etc.
+      - 'v*'
   pull_request:
     branches: [main]
+
+permissions:
+  contents: write
+  packages: write
 
 jobs:
   # ================================
@@ -39,8 +43,11 @@ jobs:
       - name: Run tests
         run: npm test
 
-    # - name: Run linter
-    #   run: npm run lint
+      - name: Run linter
+        run: npm run lint
+
+      - name: Check formatting
+        run: npm run format:check
 
   # ================================
   # Job 2: Publish (only on tags)

@@ -1,6 +1,7 @@
 {
   "name": "just-upload-it",
-  "version": "1.0.3",
+  "version": "1.0.4",
+  "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -8,7 +9,10 @@
     "build": "tsup src/index.ts --format cjs,esm --dts",
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint": "echo 'no lint yet' && exit 0",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
     "prepare": "npm run build"
   },
   "keywords": [
@@ -29,7 +33,15 @@
     "node": ">=18"
   },
   "devDependencies": {
+    "@eslint/js": "^9.37.0",
     "@types/node": "^24.7.0",
+    "@typescript-eslint/eslint-plugin": "^8.46.0",
+    "@typescript-eslint/parser": "^8.46.0",
+    "eslint": "^9.37.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "globals": "^16.4.0",
+    "prettier": "^3.6.2",
     "tsup": "^8.5.0",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"

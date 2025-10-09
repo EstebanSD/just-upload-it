@@ -5,7 +5,7 @@ export interface UploadOptions {
     size?: number;
     format?: string;
     resourceType?: 'image' | 'video' | 'raw';
-    [key: string]: any;
+    [key: string]: unknown;
   };
 }
 
@@ -16,7 +16,7 @@ export interface UploadResult {
     size?: number;
     format?: string;
     resourceType?: 'image' | 'video' | 'raw';
-    [key: string]: any;
+    [key: string]: unknown;
   };
 }
 

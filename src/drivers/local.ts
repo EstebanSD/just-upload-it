@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { randomUUID } from 'crypto';
-import { DeleteResult, IUploader, UploadOptions, UploadResult } from '../lib/interfaces';
+import { DeleteResult, IUploader, NodeError, UploadOptions, UploadResult } from '../lib/interfaces';
 
 export interface LocalConfig {
   baseDir?: string;
@@ -71,12 +71,12 @@ export class LocalDriver implements IUploader {
       await fs.unlink(filePath);
 
       return { result: 'ok' };
-    } catch (err: any) {
-      if (err.code === 'ENOENT') {
+    } catch (err: unknown) {
+      const error = err as NodeError;
+      if (error.code === 'ENOENT') {
         return { result: 'not found' };
-      } else {
-        return { result: 'error' };
       }
+      return { result: 'error' };
     }
   }
 
