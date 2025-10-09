@@ -92,5 +92,5 @@ jobs:
 
                 npm install just-upload-it@${{ steps.get_version.outputs.VERSION }}
 
-        draft: false
-        prerelease: false
+          draft: false
+          prerelease: false
