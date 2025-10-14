@@ -12,10 +12,7 @@ function isTextFile(buffer: Buffer): boolean {
 }
 
 /**
- * Detects MIME type from buffer using magic numbers (file signatures).
- *
- * Note: Only detects common binary formats. Text-based formats like SVG
- * require content inspection and are not supported.
+ * Detects MIME type from buffer using 'file-type' library.
  *
  * @param buffer - File buffer to analyze
  * @returns Detected MIME type or 'application/octet-stream' if unknown

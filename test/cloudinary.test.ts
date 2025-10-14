@@ -1,5 +1,4 @@
 import { describe, it, expect, beforeAll } from 'vitest';
-import { CloudinaryDriver } from '../src/drivers/cloudinary';
 import { Uploader } from '../src/index';
 
 // Cloudinary Credentials by env
@@ -10,7 +9,7 @@ const hasCloudinaryCredentials = !!(
 );
 
 describe('CloudinaryDriver - Unit Tests', () => {
-  const mockConfig = {
+  const config = {
     cloudName: 'test-cloud',
     apiKey: 'test-key',
     apiSecret: 'test-secret',
@@ -18,7 +17,7 @@ describe('CloudinaryDriver - Unit Tests', () => {
 
   describe('Configuration', () => {
     it('should create driver with valid config', () => {
-      const driver = new CloudinaryDriver(mockConfig);
+      const driver = new Uploader({ provider: 'cloudinary', config });
       expect(driver).toBeDefined();
       expect(driver.getUrl).toBeDefined();
       expect(driver.upload).toBeDefined();
@@ -26,24 +25,21 @@ describe('CloudinaryDriver - Unit Tests', () => {
     });
 
     it('should default secure to true', () => {
-      const driver = new CloudinaryDriver(mockConfig);
+      const driver = new Uploader({ provider: 'cloudinary', config });
       const url = driver.getUrl('test-id');
-      // Si Cloudinary está configurado correctamente, debería generar URLs
+
       expect(typeof url).toBe('string');
     });
 
     it('should accept custom secure option', () => {
-      const driver = new CloudinaryDriver({
-        ...mockConfig,
-        secure: false,
-      });
+      const driver = new Uploader({ provider: 'cloudinary', config: { ...config, secure: false } });
       expect(driver).toBeDefined();
     });
   });
 
   describe('URL Generation', () => {
     it('should generate URL for public ID', () => {
-      const driver = new CloudinaryDriver(mockConfig);
+      const driver = new Uploader({ provider: 'cloudinary', config });
       const url = driver.getUrl('my-image');
       expect(typeof url).toBe('string');
       expect(url.length).toBeGreaterThan(0);
