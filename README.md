@@ -252,20 +252,32 @@ await uploader.upload(buffer);
 
 ## Testing
 
+### Unit Tests (always run)
+
 ```bash
 npm test
 ```
 
 ### Integration Tests
 
-To run Cloudinary integration tests, set environment variables:
+#### Cloudinary
 
 ```bash
 export CLOUDINARY_CLOUD_NAME=your-cloud-name
 export CLOUDINARY_API_KEY=your-api-key
 export CLOUDINARY_API_SECRET=your-api-secret
-npm test
 ```
+
+#### AWS S3
+
+```bash
+export AWS_REGION=us-east-1
+export AWS_BUCKET=your-bucket-name
+export AWS_ACCESS_KEY_ID=your-access-key
+export AWS_SECRET_ACCESS_KEY=your-secret-key
+```
+
+### Then run: `npm test`
 
 ## License
 
