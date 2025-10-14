@@ -250,6 +250,23 @@ const uploader = new Uploader({
 await uploader.upload(buffer);
 ```
 
+## Testing
+
+```bash
+npm test
+```
+
+### Integration Tests
+
+To run Cloudinary integration tests, set environment variables:
+
+```bash
+export CLOUDINARY_CLOUD_NAME=your-cloud-name
+export CLOUDINARY_API_KEY=your-api-key
+export CLOUDINARY_API_SECRET=your-api-secret
+npm test
+```
+
 ## License
 
 [MIT License](https://github.com/EstebanSD/just-upload-it/blob/main/LICENSE) © 2025 EstebanSD

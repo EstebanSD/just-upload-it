@@ -7,6 +7,8 @@ import globals from 'globals';
 
 export default [
   js.configs.recommended,
+
+  // General config
   {
     files: ['**/*.ts'],
     languageOptions: {
@@ -35,6 +37,23 @@ export default [
       '@typescript-eslint/no-non-null-assertion': 'warn',
     },
   },
+
+  // Vitest rules
+  {
+    files: ['**/*.test.ts', '**/*.spec.ts'],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.es2022,
+        ...globals.vitest,
+      },
+    },
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unused-expressions': 'off',
+    },
+  },
+
   {
     ignores: ['node_modules/', 'dist/', 'coverage/', '*.config.js', 'test-uploads/'],
   },
