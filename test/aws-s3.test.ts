@@ -9,58 +9,6 @@ const hasS3Credentials = !!(
   process.env.AWS_SECRET_ACCESS_KEY
 );
 
-describe('S3Driver - Unit Tests', () => {
-  const config = {
-    region: 'us-east-1',
-    bucket: 'test-bucket',
-    accessKeyId: 'test-key-id',
-    secretAccessKey: 'test-secret-key',
-  };
-
-  describe('Configuration', () => {
-    it('should create driver with valid config', () => {
-      const uploader = new Uploader({ provider: 'aws-s3', config });
-      expect(uploader).toBeDefined();
-      expect(uploader.upload).toBeDefined();
-      expect(uploader.delete).toBeDefined();
-      expect(uploader.getUrl).toBeDefined();
-    });
-
-    it('should generate correct base URL', () => {
-      const uploader = new Uploader({ provider: 'aws-s3', config });
-      const url = uploader.getUrl('test-file.txt');
-
-      expect(url).toBe('https://test-bucket.s3.us-east-1.amazonaws.com/test-file.txt');
-    });
-
-    it('should handle different regions', () => {
-      const uploader = new Uploader({
-        provider: 'aws-s3',
-        config: { ...config, region: 'eu-west-1', bucket: 'eu-bucket' },
-      });
-
-      const url = uploader.getUrl('file.png');
-      expect(url).toContain('eu-bucket.s3.eu-west-1.amazonaws.com');
-    });
-  });
-
-  describe('URL Generation', () => {
-    it('should generate URL for simple filename', () => {
-      const uploader = new Uploader({ provider: 'aws-s3', config });
-      const url = uploader.getUrl('image.jpg');
-
-      expect(url).toBe('https://test-bucket.s3.us-east-1.amazonaws.com/image.jpg');
-    });
-
-    it('should generate URL for nested path', () => {
-      const uploader = new Uploader({ provider: 'aws-s3', config });
-      const url = uploader.getUrl('uploads/2024/image.jpg');
-
-      expect(url).toBe('https://test-bucket.s3.us-east-1.amazonaws.com/uploads/2024/image.jpg');
-    });
-  });
-});
-
 describe('S3Driver - Integration Tests', () => {
   beforeAll(() => {
     if (!hasS3Credentials) {
@@ -222,21 +170,5 @@ describe('Uploader Factory with S3', () => {
     });
 
     expect(uploader).toBeDefined();
-  });
-
-  it('should generate correct S3 URLs', () => {
-    const uploader = new Uploader({
-      provider: 'aws-s3',
-      config: {
-        region: 'us-west-2',
-        bucket: 'my-bucket',
-        accessKeyId: 'test',
-        secretAccessKey: 'test',
-      },
-    });
-
-    const url = uploader.getUrl('test/file.jpg');
-
-    expect(url).toBe('https://my-bucket.s3.us-west-2.amazonaws.com/test/file.jpg');
   });
 });

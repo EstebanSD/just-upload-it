@@ -79,8 +79,4 @@ export class LocalDriver implements IUploader {
       return { result: 'error' };
     }
   }
-
-  getUrl(publicId: string): string {
-    return `${this.baseUrl}/${publicId.replace(/\\/g, '/')}`;
-  }
 }

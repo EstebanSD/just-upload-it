@@ -31,5 +31,4 @@ export interface DeleteResult {
 export interface IUploader {
   upload(file: Buffer, options?: UploadOptions): Promise<UploadResult>;
   delete(publicId: string, options?: DeleteOptions): Promise<DeleteResult>;
-  getUrl?(publicId: string): string;
 }

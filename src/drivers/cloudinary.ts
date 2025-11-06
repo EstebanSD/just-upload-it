@@ -79,8 +79,4 @@ export class CloudinaryDriver implements IUploader {
 
     return { result };
   }
-
-  getUrl(publicId: string) {
-    return cloudinary.url(publicId, { secure: true });
-  }
 }
