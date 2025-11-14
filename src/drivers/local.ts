@@ -27,41 +27,45 @@ export class LocalDriver implements IUploader {
       throw new Error('Invalid load path, must not start with ..');
     }
 
-    const fullDir = path.join(this.baseDir, folder);
-    await fs.mkdir(fullDir, { recursive: true });
-
-    const baseName = options?.rename || 'file';
-    const filename = `${baseName}-${randomUUID()}.${ext}`;
-
-    const relativePath = path.join(folder, filename);
-    const filePath = path.join(this.baseDir, relativePath);
-
-    if (!this.overwrite) {
-      try {
-        await fs.access(filePath);
-        throw new Error(`File already exists: ${relativePath}`);
-      } catch {
-        // file does not exist, safe to continue
-      }
-    }
-
     try {
-      await fs.writeFile(filePath, file);
-    } catch (err) {
-      throw new Error(`Failed to write file to local storage: ${(err as Error).message}`);
-    }
+      const fullDir = path.join(this.baseDir, folder);
+      await fs.mkdir(fullDir, { recursive: true });
 
-    return {
-      url: `${this.baseUrl}/${relativePath.replace(/\\/g, '/')}`,
-      publicId: relativePath,
-      metadata: {
-        size: options?.metadata?.size || file.byteLength,
-        format: ext,
-        uploadedAt: new Date(),
-        resourceType: options?.metadata?.resourceType,
-        ...(options?.metadata || {}),
-      },
-    };
+      const baseName = options?.rename || 'file';
+      const filename = this.overwrite ? `${baseName}.${ext}` : `${baseName}-${randomUUID()}.${ext}`;
+
+      const relativePath = path.join(folder, filename);
+      const filePath = path.join(this.baseDir, relativePath);
+
+      if (!this.overwrite) {
+        try {
+          await fs.access(filePath);
+          throw new Error(`File already exists: ${relativePath}`);
+        } catch {
+          // file does not exist, safe to continue
+        }
+      }
+
+      try {
+        await fs.writeFile(filePath, file);
+      } catch (err) {
+        throw new Error(`Failed to write file to local storage: ${(err as Error).message}`);
+      }
+
+      return {
+        url: `${this.baseUrl}/${relativePath.replace(/\\/g, '/')}`,
+        publicId: relativePath,
+        metadata: {
+          size: options?.metadata?.size || file.byteLength,
+          format: ext,
+          uploadedAt: new Date(),
+          resourceType: options?.metadata?.resourceType,
+          ...(options?.metadata || {}),
+        },
+      };
+    } catch (err) {
+      throw new Error(`Failed to write file: ${(err as Error).message}`);
+    }
   }
 
   async delete(publicId: string): Promise<DeleteResult> {
