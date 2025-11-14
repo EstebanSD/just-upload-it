@@ -72,9 +72,4 @@ export class Uploader {
   async delete(publicId: string, options?: DeleteOptions): Promise<DeleteResult> {
     return await this.driver.delete(publicId, options);
   }
-
-  getUrl(publicId: string): string {
-    if (!this.driver.getUrl) return publicId;
-    return this.driver.getUrl(publicId);
-  }
 }

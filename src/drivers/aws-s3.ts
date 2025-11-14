@@ -68,7 +68,7 @@ export class S3Driver implements IUploader {
     }
 
     return {
-      url: this.getUrl(key),
+      url: `${this.baseUrl}/${key}`,
       publicId: key,
       metadata: {
         size: options?.metadata?.size,
@@ -105,9 +105,5 @@ export class S3Driver implements IUploader {
     } catch {
       return { result: 'error' };
     }
-  }
-
-  getUrl(publicId: string): string {
-    return `${this.baseUrl}/${publicId}`;
   }
 }

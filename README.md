@@ -2,6 +2,7 @@
 
 <div align="center">
 
+[![codecov](https://codecov.io/gh/EstebanSD/just-upload-it/branch/main/graph/badge.svg)](https://codecov.io/gh/EstebanSD/just-upload-it)
 [![CI](https://github.com/EstebanSD/just-upload-it/actions/workflows/ci.yml/badge.svg)](https://github.com/EstebanSD/just-upload-it/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/just-upload-it.svg)](https://www.npmjs.com/package/just-upload-it)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -123,15 +124,6 @@ interface DeleteResult {
   result: 'ok' | 'not found' | 'error';
 }
 ```
-
-`uploader.getUrl(publicId)`
-Gets the public URL for a file.
-
-**Parameters:**
-
-- `publicId: string` - File identifier
-
-**Returns:** `string`
 
 ## 🔧 Provider Configuration
 
@@ -260,21 +252,17 @@ npm test
 
 ### Integration Tests
 
-#### Cloudinary
+Integration tests for Cloudinary and AWS S3 are **optional**. If credentials are not provided:
+
+- Tests will be skipped gracefully
+- Coverage threshold is adjusted automatically (65% instead of 80%)
+- Local driver tests still run and provide good coverage
+
+To run full integration tests, create a `.env` file:
 
 ```bash
-export CLOUDINARY_CLOUD_NAME=your-cloud-name
-export CLOUDINARY_API_KEY=your-api-key
-export CLOUDINARY_API_SECRET=your-api-secret
-```
-
-#### AWS S3
-
-```bash
-export AWS_REGION=us-east-1
-export AWS_BUCKET=your-bucket-name
-export AWS_ACCESS_KEY_ID=your-access-key
-export AWS_SECRET_ACCESS_KEY=your-secret-key
+cp .env.example .env
+# Edit .env with your credentials
 ```
 
 Then run: `npm test`

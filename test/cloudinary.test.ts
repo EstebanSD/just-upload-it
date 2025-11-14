@@ -19,30 +19,13 @@ describe('CloudinaryDriver - Unit Tests', () => {
     it('should create driver with valid config', () => {
       const driver = new Uploader({ provider: 'cloudinary', config });
       expect(driver).toBeDefined();
-      expect(driver.getUrl).toBeDefined();
       expect(driver.upload).toBeDefined();
       expect(driver.delete).toBeDefined();
-    });
-
-    it('should default secure to true', () => {
-      const driver = new Uploader({ provider: 'cloudinary', config });
-      const url = driver.getUrl('test-id');
-
-      expect(typeof url).toBe('string');
     });
 
     it('should accept custom secure option', () => {
       const driver = new Uploader({ provider: 'cloudinary', config: { ...config, secure: false } });
       expect(driver).toBeDefined();
-    });
-  });
-
-  describe('URL Generation', () => {
-    it('should generate URL for public ID', () => {
-      const driver = new Uploader({ provider: 'cloudinary', config });
-      const url = driver.getUrl('my-image');
-      expect(typeof url).toBe('string');
-      expect(url.length).toBeGreaterThan(0);
     });
   });
 });
