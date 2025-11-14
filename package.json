@@ -53,5 +53,8 @@
     "@aws-sdk/client-s3": "^3.901.0",
     "cloudinary": "^2.7.0",
     "file-type": "^21.0.0"
+  },
+  "overrides": {
+    "vite": "6.4.1"
   }
 }
